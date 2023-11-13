@@ -142,6 +142,17 @@ class FolderToTextGUI:
         selected_file_types = [ftype.strip() for ftype in self.file_types_entry.get().split(',')]
         root_path = self.root_path_entry.get()
         output_filename = self.output_filename_entry.get()
+        
+        if '\\' in root_path:
+            messagebox.showerror("Error", "Root Path is incorrect.")
+            return
+        for repo_path in self.repo_paths:
+            # if repo_path[0:len(root_path)] != root_path:
+            #     messagebox.showerror("Error", "Root Path is incorrect.")
+            #     return
+            if repo_path[0:len(root_path)] != root_path:
+                messagebox.showerror("Error", "Root Path is incorrect.")
+                return
         if not output_filename:
             messagebox.showerror("Error", "Please enter an output filename.")
             return
