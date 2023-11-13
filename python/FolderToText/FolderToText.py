@@ -146,10 +146,10 @@ class FolderToTextGUI:
         if '\\' in root_path:
             messagebox.showerror("Error", "Root Path is incorrect.")
             return
+        if root_path[len(root_path)-1:len(root_path)] != '/':
+            messagebox.showerror("Error", "Root Path is incorrect.")
+            return
         for repo_path in self.repo_paths:
-            # if repo_path[0:len(root_path)] != root_path:
-            #     messagebox.showerror("Error", "Root Path is incorrect.")
-            #     return
             if repo_path[0:len(root_path)] != root_path:
                 messagebox.showerror("Error", "Root Path is incorrect.")
                 return
