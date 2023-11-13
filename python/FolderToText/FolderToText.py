@@ -20,7 +20,8 @@ class LocalRepoScraper:
                 #relative_path = os.path.basename(file_path)
                 relative_path = file_path[len(self.root_path):len(file_path)]
                 file_content = ""
-                file_content += f"\n```--- {relative_path} ---\n"
+                file_content += f"\n\n- `{relative_path}`:"
+                file_content += f"\n```"
                 try:
                     with open(file_path, 'rb') as f:  # Open file in binary mode
                         content = f.read()
