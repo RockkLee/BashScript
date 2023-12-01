@@ -1,2 +1,1 @@
 - From: https://github.com/rtfpessoa/diff2html
-- input file name should be `*.diff`
