@@ -13,8 +13,8 @@
   </head>
 
   <body>
-    <input type="file" onchange="previewFile()" /><br />
-
+    <input type="file" onchange="previewFile()" /> <span id="msg"></span> <br />
+    <button onclick="renderGitDiff()">renderGitDiff</button>
     <div id="myDiffElement"></div>
   </body>
 
@@ -27,16 +27,22 @@
         reader.addEventListener(
             "load",
             () => {
-            // this will then display a text file
-            diffString = ``;
-            diffString = reader.result;
+                // this will then display a text file
+                console.log("load activated!");
+                document.querySelector("#msg").innerText = "load activated!";
+                diffString = ``;
+                diffString = reader.result;
             },
             false,
         );
-
+        
         if (file) {
             reader.readAsText(file);
         }
+    }
+
+    function renderGitDiff() {
+        console.log("render activated!");
         var targetElement = document.getElementById('myDiffElement');
         var configuration = {
             drawFileList: true,
