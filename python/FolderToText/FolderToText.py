@@ -78,7 +78,7 @@ class FolderToTextGUI:
         master.title("Folder to Text")
 
         self.root_path_label = Label(master, text="Root Path:")
-        self.root_path_entry = Entry(master)
+        self.root_path_entry = Button(master, text="Browse...", command=self.browse_root_path)
 
         self.repo_path_label = Label(master, text="Local Files:")
         self.repo_path_entry = Button(master, text="Browse...", command=self.browse_repo_path)
@@ -103,7 +103,6 @@ class FolderToTextGUI:
         self.root_path_label.grid(row=0, column=0, sticky="E")
         self.root_path_entry.grid(row=0, column=1)
 
-
         self.repo_path_label.grid(row=1, column=0, sticky="E")
         self.repo_path_entry.grid(row=1, column=1)
 
@@ -122,8 +121,15 @@ class FolderToTextGUI:
 
         self.run_button.grid(row=5, column=1)
 
+        self.root_path = ""
         self.repo_paths = ()
         self.output_path = ""
+
+    def browse_root_path(self):
+        self.root_path = filedialog.askdirectory() + "/"
+        if not self.root_path:
+            return
+        self.root_path_label.config(text=f"Root Path: {self.root_path}")
 
     def browse_repo_path(self):
         new_repo_paths = filedialog.askopenfilenames()
@@ -140,17 +146,16 @@ class FolderToTextGUI:
 
     def run(self):
         selected_file_types = [ftype.strip() for ftype in self.file_types_entry.get().split(',')]
-        root_path = self.root_path_entry.get()
         output_filename = self.output_filename_entry.get()
         
-        if '\\' in root_path:
+        if '\\' in self.root_path:
             messagebox.showerror("Error", "Root Path is incorrect.")
             return
-        if root_path[len(root_path)-1:len(root_path)] != '/':
+        if self.root_path[len(self.root_path)-1:len(self.root_path)] != '/':
             messagebox.showerror("Error", "Root Path is incorrect.")
             return
         for repo_path in self.repo_paths:
-            if repo_path[0:len(root_path)] != root_path:
+            if repo_path[0:len(self.root_path)] != self.root_path:
                 messagebox.showerror("Error", "Root Path is incorrect.")
                 return
         if not output_filename:
@@ -162,7 +167,7 @@ class FolderToTextGUI:
         if not self.output_path:
             messagebox.showerror("Error", "Please select an output path.")
             return
-        scraper = LocalRepoScraper(self.repo_paths, root_path, self.output_path, output_filename, selected_file_types, bool(self.filter_files.get()))
+        scraper = LocalRepoScraper(self.repo_paths, self.root_path, self.output_path, output_filename, selected_file_types, bool(self.filter_files.get()))
         scraper.run()
 
 if __name__ == "__main__":
